@@ -58,4 +58,22 @@ describe("User Model", () => {
       expect(error.errors.username).toBeDefined();
     }
   });
+
+  // Test Case: should authenticate a user with the correct password
+  it("should authenticate a user with the correct password", async () => {
+    // create new user instance
+    const user = new User({ username: "testuser", password: "password123" });
+    await user.save();
+    const isMatch = await user.comparePassword("password123");
+    expect(isMatch).toBe(true);
+  });
+
+  // Test Case: should NOT authenticate a user with the correct password
+  it("should not authenticate a user with the correct password", async () => {
+    // create new user instance
+    const user = new User({ username: "testuser", password: "password123" });
+    await user.save();
+    const isMatch = await user.comparePassword("password121");
+    expect(isMatch).toBe(false);
+  });
 });
